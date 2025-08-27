@@ -1,4 +1,4 @@
-import { useState, useEffect, } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Confetti from "react-confetti";
 import "./App.css";
@@ -7,7 +7,7 @@ function App() {
   const [step, setStep] = useState("letter"); // letter → countdown → birthday → messages → gallery → final
   const [countdown, setCountdown] = useState(10);
   const [candlesOn, setCandlesOn] = useState(true);
-  const [flamesVisible, setFlamesVisible] = useState(true); // for fade-out animation
+  const [flamesVisible, setFlamesVisible] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Countdown Logic
@@ -21,13 +21,17 @@ function App() {
     }
   }, [step, countdown]);
 
-  // 🎤 Microphone Blow Detection
+  // 🎤 Microphone Blow Detection (Proper Version)
   useEffect(() => {
     if (step === "birthday" && candlesOn) {
       let audioContext;
       let analyser;
       let microphone;
       let dataArray;
+      let interval;
+      let consecutiveBlows = 0; // count sustained blow frames
+      const REQUIRED_CONSECUTIVE = 5; // blow must sustain for 5 frames
+      const THRESHOLD = 35; // volume threshold
 
       const startMic = async () => {
         try {
@@ -35,48 +39,42 @@ function App() {
           const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
           microphone = audioContext.createMediaStreamSource(stream);
           analyser = audioContext.createAnalyser();
-          analyser.fftSize = 256;
-          const bufferLength = analyser.frequencyBinCount;
-          dataArray = new Uint8Array(bufferLength);
+          analyser.fftSize = 512;
+          dataArray = new Uint8Array(analyser.frequencyBinCount);
           microphone.connect(analyser);
 
-          const checkVolume = () => {
+          interval = setInterval(() => {
             analyser.getByteFrequencyData(dataArray);
-            let values = 0;
-            for (let i = 0; i < dataArray.length; i++) {
-              values += dataArray[i];
-            }
-            let average = values / dataArray.length;
+            const average = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
 
-            // 🎤 Blow threshold
-            if (average > 60) {
-              setFlamesVisible(false); // start fade-out
-              setTimeout(() => setCandlesOn(false), 1000); // after animation
-              stopMic();
+            if (average > THRESHOLD) {
+              consecutiveBlows += 1;
+              if (consecutiveBlows >= REQUIRED_CONSECUTIVE) {
+                setFlamesVisible(false); // fade out
+                setTimeout(() => setCandlesOn(false), 1000);
+                clearInterval(interval);
+                audioContext.close();
+              }
             } else {
-              requestAnimationFrame(checkVolume);
+              consecutiveBlows = 0; // reset if average drops below threshold
             }
-          };
+          }, 100); // check every 100ms
 
-          checkVolume();
         } catch (err) {
           console.error("Mic error:", err);
         }
       };
 
-      const stopMic = () => {
-        if (audioContext && audioContext.state !== "closed") {
-          audioContext.close();
-        }
-      };
-
       startMic();
 
-      return () => stopMic();
+      return () => {
+        if (interval) clearInterval(interval);
+        if (audioContext && audioContext.state !== "closed") audioContext.close();
+      };
     }
   }, [step, candlesOn]);
 
-  // Countdown format (H:M:S)
+  // Countdown format
   const formatCountdown = () => {
     const hrs = Math.floor(countdown / 3600);
     const mins = Math.floor((countdown % 3600) / 60);
@@ -86,15 +84,8 @@ function App() {
 
   const { hrs, mins, secs } = formatCountdown();
 
-  // Memories
-  const images = [
-    "/images/day.jpg",
-    "/images/dayy.jpg",
-    "/images/day.jpg",
-    "/images/dayy.jpg",
-  ];
+  const images = ["/images/day.jpg", "/images/dayy.jpg", "/images/day.jpg", "/images/dayy.jpg"];
 
-  // Auto change image every 3s
   useEffect(() => {
     if (step === "gallery") {
       const interval = setInterval(() => {
@@ -135,12 +126,11 @@ function App() {
       {step === "birthday" && (
         <div className="birthday-container">
           <Confetti />
-          <h1 className="birthday-title">🎉 Happy Birthday My Love🎉</h1>
+          <h1 className="birthday-title">🎉 Happy Birthday My Love 🎉</h1>
           <p className="birthday-sub">
             Blow into the microphone to put out the candles 🎤🎂
           </p>
 
-          {/* Cake */}
           <div className="cake-container">
             <div className="cake">
               <div className="candles">
@@ -153,7 +143,7 @@ function App() {
                       animate={{ opacity: flamesVisible ? 1 : 0 }}
                       transition={{ duration: 1 }}
                     >
-                      <div className="flame"></div>
+                      <div className="flame flicker"></div>
                     </motion.div>
                   ))}
               </div>
@@ -188,7 +178,6 @@ function App() {
         <div className="gallery-container">
           <h2 className="section-title">💖 Our Memories 💖</h2>
 
-          {/* Single image with fade animation */}
           <div className="gallery-image">
             <AnimatePresence mode="wait">
               <motion.img

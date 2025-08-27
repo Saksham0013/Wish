@@ -1,28 +1,33 @@
 /* 🌈 Background */
 body {
   margin: 0;
-  padding: 0;
+  padding: 1rem;
   font-family: "Poppins", sans-serif;
   background: linear-gradient(135deg, #ffdee9, #b5fffc);
   min-height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
+/* App container */
 .app-container {
   text-align: center;
   color: #333;
   padding: 2rem;
-  width: 90%;
+  width: 100%;
   max-width: 900px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 }
 
-/* 💌 Letter Card */
+/* Letter Card */
 .letter-card {
   background: white;
   padding: 2rem;
@@ -31,7 +36,8 @@ body {
   font-size: 1.5rem;
   cursor: pointer;
   transition: 0.3s ease;
-  max-width: 100%;
+  width: 100%;
+  max-width: 600px;
 }
 
 .letter-card:hover {
@@ -39,14 +45,13 @@ body {
   background: #ffe6f7;
 }
 
-/* ⏳ Countdown */
+/* Countdown */
 .countdown-container {
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  width: 100%;
 }
 
 .countdown-cards {
@@ -65,11 +70,9 @@ body {
   border-radius: 15px;
   min-width: 80px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-  flex: 1 1 60px;
-  text-align: center;
 }
 
-/* 🎂 Birthday */
+/* Birthday */
 .birthday-title {
   font-size: 2.5rem;
   margin: 1rem 0;
@@ -79,17 +82,19 @@ body {
 
 .birthday-sub {
   font-size: 1.2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   color: #555;
   text-align: center;
 }
 
-/* 🎂 Cake & Candles */
+/* Cake & Candles */
 .cake-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin: 2rem 0;
+  align-items: flex-start;
+  margin: 3rem 0 1rem 0;
+  position: relative;
+  margin: 5rem 0 1rem 0;
 }
 
 .cake {
@@ -98,6 +103,8 @@ body {
   background: #ff8a80;
   border-radius: 20px 20px 0 0;
   position: relative;
+  z-index: 1;
+  margin-top: 1rem;
 }
 
 .candles {
@@ -105,9 +112,10 @@ body {
   justify-content: center;
   gap: 20px;
   position: absolute;
-  top: -60px;
+  top: -50px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 2;
 }
 
 .candle {
@@ -141,26 +149,12 @@ body {
   }
 }
 
-/* Smoke Puff */
-.smoke {
-  width: 12px;
-  height: 12px;
-  background: radial-gradient(circle, rgba(200, 200, 200, 0.8) 0%, transparent 70%);
-  border-radius: 50%;
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-/* 💖 Messages */
+/* Messages */
 .messages-container {
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
   width: 100%;
 }
 
@@ -170,8 +164,8 @@ body {
   padding: 1.5rem;
   margin: 1rem 0;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  width: 100%;
   max-width: 700px;
-  width: 90%;
 }
 
 .messages p {
@@ -179,25 +173,23 @@ body {
   margin: 0.5rem 0;
 }
 
-/* 📸 Gallery */
+/* Gallery */
 .gallery-container {
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  overflow: hidden;
   width: 100%;
 }
 
 .gallery-image {
-  width: 250px;
-  height: 350px;
+  width: 100%;
+  max-width: 250px;
+  height: auto;
   border-radius: 20px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   margin-bottom: 1rem;
-  position: relative;
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -205,17 +197,10 @@ body {
 
 .gallery-image img {
   width: 100%;
-  height: calc(100% - 50px);
+  height: auto;
   object-fit: contain;
-  background-color: #f0f0f0;
-  display: block;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  transition: transform 0.5s ease;
-}
-
-.gallery-image img:hover {
-  transform: scale(1.05);
 }
 
 .gallery-image .caption {
@@ -228,14 +213,9 @@ body {
   color: #333;
   font-size: 1rem;
   border-top: 1px solid #ddd;
-  padding: 0 0.5rem;
 }
 
-.gallery-container .btn {
-  margin-top: 1rem;
-}
-
-/* 🌟 Final Note */
+/* Final Note */
 .final-note {
   background: white;
   padding: 2rem;
@@ -243,38 +223,19 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   margin-top: 2rem;
   text-align: center;
+  width: 100%;
   max-width: 700px;
-  width: 90%;
 }
 
-.final-title {
-  font-size: 2rem;
-  color: #9c27b0;
-}
-
-.final-text {
-  margin-top: 1rem;
-  font-size: 1.3rem;
-  color: #444;
-  line-height: 1.6;
-}
-
-/* 🎨 Buttons */
+/* Buttons */
 .btn {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   padding: 0.8rem 2rem;
   border: none;
   border-radius: 25px;
   font-size: 1rem;
   cursor: pointer;
   font-weight: bold;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  transition: 0.3s;
-  display: inline-block;
-}
-
-.btn:hover {
-  transform: scale(1.05);
 }
 
 .btn.red {
@@ -292,15 +253,16 @@ body {
   color: white;
 }
 
-/* 🎀 Section Title */
+/* Section Title */
 .section-title {
   font-size: 1.8rem;
   color: #ff4081;
   margin-bottom: 1rem;
-  text-align: center;
 }
 
-/* 📱 Responsive Design */
+/* Responsive Design */
+
+/* Laptop / Tablet */
 @media (max-width: 1024px) {
   .cake {
     width: 160px;
@@ -309,19 +271,35 @@ body {
 
   .candles {
     gap: 15px;
+    top: -50px;
   }
 
   .time-card {
     font-size: 1.8rem;
     padding: 1.2rem;
-    min-width: 70px;
+  }
+
+  .countdown-container {
+    flex-direction: column;
+    /* vertical countdown */
+    gap: 1rem;
   }
 }
 
+/* Tablet / Mobile */
 @media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  .app-container {
+    padding: 1.5rem;
+    width: 95%;
+  }
+
   .letter-card {
     font-size: 1.2rem;
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   .birthday-title {
@@ -339,6 +317,7 @@ body {
 
   .candles {
     gap: 12px;
+    top: -45px;
   }
 
   .time-card {
@@ -348,15 +327,35 @@ body {
   }
 
   .gallery-image {
-    width: 180px;
-    height: 260px;
+    max-width: 180px;
+  }
+
+  .messages p {
+    font-size: 1rem;
   }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
+  body {
+    font-size: 12px;
+    padding: 0.5rem;
+  }
+
+  .app-container {
+    padding: 1rem;
+    width: 100%;
+  }
+
   .letter-card {
     font-size: 1rem;
-    padding: 1rem;
+    padding: 0.8rem;
+  }
+
+  .time-card {
+    font-size: 1.2rem;
+    padding: 0.7rem;
+    min-width: 50px;
   }
 
   .birthday-title {
@@ -374,6 +373,7 @@ body {
 
   .candles {
     gap: 8px;
+    top: -35px;
   }
 
   .candle {
@@ -388,17 +388,20 @@ body {
 
   .time-card {
     font-size: 1.2rem;
-    padding: 0.8rem;
+    padding: 0.7rem;
     min-width: 50px;
   }
 
-  .gallery-image {
-    width: 140px;
-    height: 200px;
+  .countdown-container {
+    flex-direction: row;
+    /* horizontal countdown */
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 0.5rem;
   }
 
-  .messages p {
-    font-size: 1rem;
+  .gallery-image {
+    max-width: 140px;
   }
 
   .final-title {
