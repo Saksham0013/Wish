@@ -1,0 +1,409 @@
+/* 🌈 Background */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #ffdee9, #b5fffc);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-container {
+  text-align: center;
+  color: #333;
+  padding: 2rem;
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 💌 Letter Card */
+.letter-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.letter-card:hover {
+  transform: scale(1.05);
+  background: #ffe6f7;
+}
+
+/* ⏳ Countdown */
+.countdown-container {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.countdown-cards {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.time-card {
+  background: white;
+  padding: 1.5rem;
+  font-size: 2rem;
+  font-weight: bold;
+  border-radius: 15px;
+  min-width: 80px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* 🎂 Birthday */
+.birthday-title {
+  font-size: 2.5rem;
+  margin: 1rem 0;
+  color: #ff4081;
+  text-align: center;
+}
+
+.birthday-sub {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #555;
+  text-align: center;
+}
+
+/* 🎂 Cake & Candles */
+.cake-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.cake {
+  width: 180px;
+  height: 100px;
+  background: #ff8a80;
+  border-radius: 20px 20px 0 0;
+  position: relative;
+}
+
+.candles {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.candle {
+  width: 12px;
+  height: 40px;
+  background: #fff;
+  border-radius: 4px;
+  position: relative;
+}
+
+.flame {
+  width: 10px;
+  height: 20px;
+  background: radial-gradient(ellipse at center, yellow 0%, orange 70%, transparent 100%);
+  border-radius: 50%;
+  animation: flicker 0.15s infinite alternate;
+  position: absolute;
+  top: -20px;
+  left: 0;
+}
+
+@keyframes flicker {
+  from {
+    transform: scale(1) translateY(0px);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1.2) translateY(-2px);
+    opacity: 0.8;
+  }
+}
+
+/* Smoke Puff */
+.smoke {
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, rgba(200, 200, 200, 0.8) 0%, transparent 70%);
+  border-radius: 50%;
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* 💖 Messages */
+.messages-container {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.messages {
+  background: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+}
+
+.messages p {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+/* 📸 Gallery */
+.gallery-container {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.gallery-image {
+  width: 250px;
+  /* Card width */
+  height: 350px;
+  /* Card height */
+  border-radius: 20px;
+  /* Rounded corners */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  /* Card shadow */
+  overflow: hidden;
+  margin-bottom: 1rem;
+  position: relative;
+  background-color: #fff;
+  /* Card background */
+  display: flex;
+  flex-direction: column;
+}
+
+.gallery-image img {
+  width: 100%;
+  height: calc(100% - 50px);
+  object-fit: contain;
+  /* show whole image without cropping */
+  background-color: #f0f0f0;
+  /* optional background to fill gaps */
+  display: block;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  transition: transform 0.5s ease;
+}
+
+.gallery-image img:hover {
+  transform: scale(1.05);
+}
+
+/* Caption at bottom of card */
+.gallery-image .caption {
+  height: 50px;
+  /* Fixed caption height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  font-weight: bold;
+  color: #333;
+  font-size: 1rem;
+  border-top: 1px solid #ddd;
+  padding: 0 0.5rem;
+}
+
+/* Button below the gallery */
+.gallery-container .btn {
+  margin-top: 1rem;
+}
+
+/* 🌟 Final Note */
+.final-note {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  margin-top: 2rem;
+  text-align: center;
+  max-width: 700px;
+}
+
+.final-title {
+  font-size: 2rem;
+  color: #9c27b0;
+}
+
+.final-text {
+  margin-top: 1rem;
+  font-size: 1.3rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* 🎨 Buttons */
+.btn {
+  margin-top: 1.5rem;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  display: inline-block;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn.red {
+  background: #ff4081;
+  color: white;
+}
+
+.btn.green {
+  background: #4caf50;
+  color: white;
+}
+
+.btn.purple {
+  background: #9c27b0;
+  color: white;
+}
+
+/* 🎀 Section Title */
+.section-title {
+  font-size: 1.8rem;
+  color: #ff4081;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 768px) {
+  .letter-card {
+    font-size: 1.2rem;
+    padding: 1.5rem;
+  }
+
+  .birthday-title {
+    font-size: 2rem;
+  }
+
+  .birthday-sub {
+    font-size: 1rem;
+  }
+
+  .cake {
+    width: 140px;
+    height: 80px;
+  }
+
+  .candles {
+    gap: 12px;
+  }
+
+  .time-card {
+    font-size: 1.5rem;
+    padding: 1rem;
+    min-width: 60px;
+  }
+
+  .gallery-scroll img {
+    width: 160px;
+    height: 200px;
+  }
+
+  .final-title {
+    font-size: 1.5rem;
+  }
+
+  .final-text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .letter-card {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .birthday-title {
+    font-size: 1.5rem;
+  }
+
+  .birthday-sub {
+    font-size: 0.9rem;
+  }
+
+  .cake {
+    width: 110px;
+    height: 65px;
+  }
+
+  .candles {
+    gap: 8px;
+  }
+
+  .candle {
+    width: 8px;
+    height: 28px;
+  }
+
+  .flame {
+    width: 8px;
+    height: 14px;
+  }
+
+  .time-card {
+    font-size: 1.2rem;
+    padding: 0.8rem;
+    min-width: 50px;
+  }
+
+  .gallery-scroll img {
+    width: 120px;
+    height: 160px;
+  }
+
+  .messages p {
+    font-size: 1rem;
+  }
+
+  .final-title {
+    font-size: 1.3rem;
+  }
+
+  .final-text {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
