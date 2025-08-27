@@ -14,7 +14,7 @@ body {
   text-align: center;
   color: #333;
   padding: 2rem;
-  width: 100%;
+  width: 90%;
   max-width: 900px;
   display: flex;
   flex-direction: column;
@@ -31,6 +31,7 @@ body {
   font-size: 1.5rem;
   cursor: pointer;
   transition: 0.3s ease;
+  max-width: 100%;
 }
 
 .letter-card:hover {
@@ -45,6 +46,7 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  width: 100%;
 }
 
 .countdown-cards {
@@ -63,6 +65,8 @@ body {
   border-radius: 15px;
   min-width: 80px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  flex: 1 1 60px;
+  text-align: center;
 }
 
 /* 🎂 Birthday */
@@ -157,6 +161,7 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  width: 100%;
 }
 
 .messages {
@@ -166,6 +171,7 @@ body {
   margin: 1rem 0;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
   max-width: 700px;
+  width: 90%;
 }
 
 .messages p {
@@ -181,22 +187,18 @@ body {
   align-items: center;
   text-align: center;
   overflow: hidden;
+  width: 100%;
 }
 
 .gallery-image {
   width: 250px;
-  /* Card width */
   height: 350px;
-  /* Card height */
   border-radius: 20px;
-  /* Rounded corners */
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  /* Card shadow */
   overflow: hidden;
   margin-bottom: 1rem;
   position: relative;
   background-color: #fff;
-  /* Card background */
   display: flex;
   flex-direction: column;
 }
@@ -205,9 +207,7 @@ body {
   width: 100%;
   height: calc(100% - 50px);
   object-fit: contain;
-  /* show whole image without cropping */
   background-color: #f0f0f0;
-  /* optional background to fill gaps */
   display: block;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
@@ -218,10 +218,8 @@ body {
   transform: scale(1.05);
 }
 
-/* Caption at bottom of card */
 .gallery-image .caption {
   height: 50px;
-  /* Fixed caption height */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -233,7 +231,6 @@ body {
   padding: 0 0.5rem;
 }
 
-/* Button below the gallery */
 .gallery-container .btn {
   margin-top: 1rem;
 }
@@ -247,6 +244,7 @@ body {
   margin-top: 2rem;
   text-align: center;
   max-width: 700px;
+  width: 90%;
 }
 
 .final-title {
@@ -303,6 +301,23 @@ body {
 }
 
 /* 📱 Responsive Design */
+@media (max-width: 1024px) {
+  .cake {
+    width: 160px;
+    height: 90px;
+  }
+
+  .candles {
+    gap: 15px;
+  }
+
+  .time-card {
+    font-size: 1.8rem;
+    padding: 1.2rem;
+    min-width: 70px;
+  }
+}
+
 @media (max-width: 768px) {
   .letter-card {
     font-size: 1.2rem;
@@ -332,17 +347,9 @@ body {
     min-width: 60px;
   }
 
-  .gallery-scroll img {
-    width: 160px;
-    height: 200px;
-  }
-
-  .final-title {
-    font-size: 1.5rem;
-  }
-
-  .final-text {
-    font-size: 1rem;
+  .gallery-image {
+    width: 180px;
+    height: 260px;
   }
 }
 
@@ -385,9 +392,9 @@ body {
     min-width: 50px;
   }
 
-  .gallery-scroll img {
-    width: 120px;
-    height: 160px;
+  .gallery-image {
+    width: 140px;
+    height: 200px;
   }
 
   .messages p {
