@@ -89,6 +89,9 @@ function App() {
   // Memories
   const images = [
     "/images/day.jpg",
+    "/images/dayy.jpg",
+    "/images/day.jpg",
+    "/images/dayy.jpg",
   ];
 
   // Auto change image every 3s
