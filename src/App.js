@@ -9,6 +9,9 @@ function App() {
   const [candlesOn, setCandlesOn] = useState(true);
   const [flamesVisible, setFlamesVisible] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [micStarted, setMicStarted] = useState(false);
+
+  const images = ["/images/day.jpg", "/images/dayy.jpg", "/images/day.jpg", "/images/dayy.jpg"];
 
   // Countdown Logic
   useEffect(() => {
@@ -21,19 +24,30 @@ function App() {
     }
   }, [step, countdown]);
 
-  // 🎤 Microphone Blow Detection (Proper Version)
+  // Gallery auto-slide
   useEffect(() => {
-    if (step === "birthday" && candlesOn) {
+    if (step === "gallery") {
+      const interval = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % images.length);
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [step, images.length]);
+
+  // Desktop blow detection
+  // Desktop blow detection
+  useEffect(() => {
+    if (step === "birthday" && candlesOn && window.innerWidth > 768) {
       let audioContext;
       let analyser;
       let microphone;
       let dataArray;
       let interval;
-      let consecutiveBlows = 0; // count sustained blow frames
-      const REQUIRED_CONSECUTIVE = 5; // blow must sustain for 5 frames
-      const THRESHOLD = 35; // volume threshold
+      let consecutiveBlows = 0;
+      const REQUIRED_CONSECUTIVE = 5;
+      const THRESHOLD = 35;
 
-      const startMic = async () => {
+      const startDesktopMic = async () => {
         try {
           audioContext = new (window.AudioContext || window.webkitAudioContext)();
           const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -50,22 +64,21 @@ function App() {
             if (average > THRESHOLD) {
               consecutiveBlows += 1;
               if (consecutiveBlows >= REQUIRED_CONSECUTIVE) {
-                setFlamesVisible(false); // fade out
+                setFlamesVisible(false);
                 setTimeout(() => setCandlesOn(false), 1000);
                 clearInterval(interval);
                 audioContext.close();
               }
             } else {
-              consecutiveBlows = 0; // reset if average drops below threshold
+              consecutiveBlows = 0;
             }
-          }, 100); // check every 100ms
-
+          }, 100);
         } catch (err) {
           console.error("Mic error:", err);
         }
       };
 
-      startMic();
+      startDesktopMic();
 
       return () => {
         if (interval) clearInterval(interval);
@@ -74,6 +87,7 @@ function App() {
     }
   }, [step, candlesOn]);
 
+
   // Countdown format
   const formatCountdown = () => {
     const hrs = Math.floor(countdown / 3600);
@@ -81,19 +95,45 @@ function App() {
     const secs = countdown % 60;
     return { hrs, mins, secs };
   };
-
   const { hrs, mins, secs } = formatCountdown();
 
-  const images = ["/images/day.jpg", "/images/dayy.jpg", "/images/day.jpg", "/images/dayy.jpg"];
+  // Mobile Blow Detection
+  const startBlowDetectionMobile = async () => {
+    try {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const microphone = audioContext.createMediaStreamSource(stream);
+      const analyser = audioContext.createAnalyser();
+      analyser.fftSize = 512;
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+      microphone.connect(analyser);
 
-  useEffect(() => {
-    if (step === "gallery") {
+      let consecutiveBlows = 0;
+      const REQUIRED_CONSECUTIVE = 5;
+      const THRESHOLD = 20; // lower for mobile
+
       const interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % images.length);
-      }, 3000);
-      return () => clearInterval(interval);
+        analyser.getByteFrequencyData(dataArray);
+        const average = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+
+        if (average > THRESHOLD) {
+          consecutiveBlows += 1;
+          if (consecutiveBlows >= REQUIRED_CONSECUTIVE) {
+            setFlamesVisible(false);
+            setTimeout(() => setCandlesOn(false), 1000);
+            clearInterval(interval);
+            audioContext.close();
+          }
+        } else {
+          consecutiveBlows = 0;
+        }
+      }, 100);
+
+      setMicStarted(true);
+    } catch (err) {
+      console.error("Mic error:", err);
     }
-  }, [step, images.length]);
+  };
 
   return (
     <div className="app-container">
@@ -150,6 +190,14 @@ function App() {
             </div>
           </div>
 
+          {/* Mobile blow button */}
+          {candlesOn && !micStarted && window.innerWidth <= 768 && (
+            <button className="btn blue" onClick={startBlowDetectionMobile}>
+              🎤 Start Blowing
+            </button>
+          )}
+
+          {/* Next Surprise */}
           {!candlesOn && (
             <button className="btn green" onClick={() => setStep("messages")}>
               💖 Next Surprise
@@ -177,7 +225,6 @@ function App() {
       {step === "gallery" && (
         <div className="gallery-container">
           <h2 className="section-title">💖 Our Memories 💖</h2>
-
           <div className="gallery-image">
             <AnimatePresence mode="wait">
               <motion.img
