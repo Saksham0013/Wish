@@ -184,7 +184,7 @@ body {
 
 .gallery-image {
   width: 100%;
-  max-width: 250px;
+  max-width: 600px;
   height: auto;
   border-radius: 20px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -326,7 +326,7 @@ body {
   }
 
   .gallery-image {
-    max-width: 180px;
+    max-width: 400px;
   }
 
   .messages p {
@@ -432,7 +432,7 @@ body {
   }
 
   .gallery-image {
-    max-width: 140px;
+    max-width: 300px;
   }
 
   .final-title {
