@@ -302,7 +302,7 @@ body {
   }
 
   .birthday-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .birthday-sub {
@@ -334,7 +334,7 @@ body {
   }
 
   .section-title {
-    font-size: 1.2rem;
+    font-size: 20px;
   }
 
   .countdown-container {
@@ -350,7 +350,7 @@ body {
     justify-content: center;
     gap: 1rem;
     margin-top: 1rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 }
 
@@ -378,7 +378,7 @@ body {
   }
 
   .birthday-title {
-    font-size: 1.5rem;
+    font-size: 18px;
   }
 
   .birthday-sub {
@@ -412,7 +412,7 @@ body {
   }
 
   .section-title {
-    font-size: 1rem;
+    font-size: 20px;
   }
 
   .countdown-container {

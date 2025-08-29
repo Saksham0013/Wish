@@ -11,7 +11,7 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [micStarted, setMicStarted] = useState(false);
 
-  const images = ["/images/day.jpg", "/images/dayy.jpg", "/images/day.jpg", "/images/dayy.jpg"];
+  const images = ["/images/First.jpeg", "/images/Second.jpeg", "/images/Third.jpeg", "/images/Fourth.jpeg"];
 
   // Countdown Logic
   useEffect(() => {
