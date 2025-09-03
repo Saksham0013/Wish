@@ -10,8 +10,14 @@ function App() {
   const [flamesVisible, setFlamesVisible] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [micStarted, setMicStarted] = useState(false);
+  const [allSeen, setAllSeen] = useState(false);
 
-  const images = ["/images/First.jpeg", "/images/Second.jpeg", "/images/Third.jpeg", "/images/Fourth.jpeg"];
+  const images = [
+    "/images/First.jpeg",
+    "/images/Second.jpeg",
+    "/images/Third.jpeg",
+    "/images/Fourth.jpeg",
+  ];
 
   // Countdown Logic
   useEffect(() => {
@@ -28,13 +34,18 @@ function App() {
   useEffect(() => {
     if (step === "gallery") {
       const interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % images.length);
+        setCurrentIndex((prev) => {
+          const nextIndex = (prev + 1) % images.length;
+          if (nextIndex === images.length - 1) {
+            setAllSeen(true);
+          }
+          return nextIndex;
+        });
       }, 3000);
       return () => clearInterval(interval);
     }
   }, [step, images.length]);
 
-  // Desktop blow detection
   // Desktop blow detection
   useEffect(() => {
     if (step === "birthday" && candlesOn && window.innerWidth > 768) {
@@ -86,7 +97,6 @@ function App() {
       };
     }
   }, [step, candlesOn]);
-
 
   // Countdown format
   const formatCountdown = () => {
@@ -239,9 +249,13 @@ function App() {
             </AnimatePresence>
           </div>
 
-          <button className="btn green" onClick={() => setStep("final")}>
-            🌟 Final Surprise
-          </button>
+          {!allSeen ? (
+            <p className="hint-text">✨ Wait, 4 memories will appear ✨</p>
+          ) : (
+            <button className="btn green" onClick={() => setStep("final")}>
+              🌟 Final Surprise
+            </button>
+          )}
         </div>
       )}
 
