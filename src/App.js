@@ -232,9 +232,9 @@ function App() {
             <div className="messages-container">
               <h2 className="section-title">💌 My Special Messages 💌</h2>
               <div className="messages">
-                <p>✨ You make my world brighter every single day.</p>
-                <p>💖 Thank you for being my everything.</p>
-                <p>🌸 Wishing you endless love, laughter & joy.</p>
+                <p> You make my world brighter every single day.</p>
+                <p> Thank you for being my everything.</p>
+                <p> Wishing you endless love, laughter & joy.</p>
               </div>
               <button className="btn purple" onClick={() => setStep("gallery")}>
                 📸 See Our Memories
@@ -275,8 +275,11 @@ function App() {
             <div className="final-note">
               <h2 className="final-title">💍 Forever & Always 💍</h2>
               <p className="final-text">
-                No matter where life takes us, my heart will always belong to you.
-                You are my sunshine, my love, and my forever. 💖
+                Babe, I just want you to know… life without you would be so empty and gray😌.
+                You came into my life and turned it into pure heaven—your smile, your laugh, your love…
+                everything about you makes my world brighter🤌❤️.
+                I can’t imagine a day without you.
+                I love you more than anything💕, and I’m so grateful that you’re mine. ❤️
               </p>
             </div>
           )}
