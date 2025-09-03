@@ -4,8 +4,7 @@ import Confetti from "react-confetti";
 import "./App.css";
 
 function App() {
-  const [step, setStep] = useState("letter"); // letter → countdown → birthday → messages → gallery → final
-  const [countdown, setCountdown] = useState(10);
+  const [step, setStep] = useState("letter"); // letter → birthday → messages → gallery → final
   const [candlesOn, setCandlesOn] = useState(true);
   const [flamesVisible, setFlamesVisible] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -19,16 +18,32 @@ function App() {
     "/images/Fourth.jpeg",
   ];
 
-  // Countdown Logic
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  // Update current time every second and calculate countdown
   useEffect(() => {
-    if (step === "countdown" && countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-    if (step === "countdown" && countdown === 0) {
-      setStep("birthday");
-    }
-  }, [step, countdown]);
+    const timer = setInterval(() => {
+      const now = new Date();
+      setCurrentTime(now);
+
+      const openDate = new Date(now.getFullYear(), 8, 13, 0, 0, 0); // Sept 13, 12:00 AM
+      const diff = openDate - now;
+
+      if (diff > 0) {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        setTimeLeft({ days, hours, minutes, seconds });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   // Gallery auto-slide
   useEffect(() => {
@@ -36,9 +51,7 @@ function App() {
       const interval = setInterval(() => {
         setCurrentIndex((prev) => {
           const nextIndex = (prev + 1) % images.length;
-          if (nextIndex === images.length - 1) {
-            setAllSeen(true);
-          }
+          if (nextIndex === images.length - 1) setAllSeen(true);
           return nextIndex;
         });
       }, 3000);
@@ -98,15 +111,6 @@ function App() {
     }
   }, [step, candlesOn]);
 
-  // Countdown format
-  const formatCountdown = () => {
-    const hrs = Math.floor(countdown / 3600);
-    const mins = Math.floor((countdown % 3600) / 60);
-    const secs = countdown % 60;
-    return { hrs, mins, secs };
-  };
-  const { hrs, mins, secs } = formatCountdown();
-
   // Mobile Blow Detection
   const startBlowDetectionMobile = async () => {
     try {
@@ -145,129 +149,138 @@ function App() {
     }
   };
 
+  // Check if it's September 13, 12:00 AM or later
+  const isOpenTime = () => {
+    const now = new Date();
+    const openDate = new Date(now.getFullYear(), 8, 13, 0, 0, 0); // Month 8 = September, 12:00 AM
+    return now >= openDate;
+  };
+
   return (
     <div className="app-container">
-      {/* Letter */}
-      {step === "letter" && (
-        <motion.div
-          className="letter-card"
-          onClick={() => setStep("countdown")}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.7 }}
-        >
-          💌 Tap to Open My Special Letter 💌
-        </motion.div>
-      )}
-
-      {/* Countdown */}
-      {step === "countdown" && (
-        <div className="countdown-container">
-          <h2 className="section-title">⏳ Countdown Begins!</h2>
-          <div className="countdown-cards">
-            <div className="time-card">{hrs}h</div>
-            <div className="time-card">{mins}m</div>
-            <div className="time-card">{secs}s</div>
-          </div>
-        </div>
-      )}
-
-      {/* Birthday */}
-      {step === "birthday" && (
-        <div className="birthday-container">
-          <Confetti />
-          <h1 className="birthday-title">🎉 Happy Birthday My Love 🎉</h1>
-          <p className="birthday-sub">
-            Blow into the microphone to put out the candles 🎤🎂
+      {!isOpenTime() ? (
+        <div className="locked-message">
+          <h2>⏳ Not Yet Time!</h2>
+          <p>The surprise will open on September 13 at 12:00 AM.</p>
+          <p>Current Time: {currentTime.toLocaleString()}</p>
+          <h3>Countdown:</h3>
+          <p>
+            {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
           </p>
+        </div>
+      ) : (
+        <>
+          {/* Letter */}
+          {step === "letter" && (
+            <motion.div
+              className="letter-card"
+              onClick={() => setStep("birthday")}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.7 }}
+            >
+              💌 Tap to Open My Special Letter 💌
+            </motion.div>
+          )}
 
-          <div className="cake-container">
-            <div className="cake">
-              <div className="candles">
-                {candlesOn &&
-                  [1, 2, 3].map((i) => (
-                    <motion.div
-                      className="candle"
-                      key={i}
-                      initial={{ opacity: 1 }}
-                      animate={{ opacity: flamesVisible ? 1 : 0 }}
-                      transition={{ duration: 1 }}
-                    >
-                      <div className="flame flicker"></div>
-                    </motion.div>
-                  ))}
+          {/* Birthday */}
+          {step === "birthday" && (
+            <div className="birthday-container">
+              <Confetti />
+              <h1 className="birthday-title">🎉 Happy Birthday My Love 🎉</h1>
+              <p className="birthday-sub">
+                Blow into the microphone to put out the candles 🎤🎂
+              </p>
+
+              <div className="cake-container">
+                <div className="cake">
+                  <div className="candles">
+                    {candlesOn &&
+                      [1, 2, 3].map((i) => (
+                        <motion.div
+                          className="candle"
+                          key={i}
+                          initial={{ opacity: 1 }}
+                          animate={{ opacity: flamesVisible ? 1 : 0 }}
+                          transition={{ duration: 1 }}
+                        >
+                          <div className="flame flicker"></div>
+                        </motion.div>
+                      ))}
+                  </div>
+                </div>
               </div>
+
+              {/* Mobile blow button */}
+              {candlesOn && !micStarted && window.innerWidth <= 768 && (
+                <button className="btn blue" onClick={startBlowDetectionMobile}>
+                  🎤 Start Blowing
+                </button>
+              )}
+
+              {/* Next Surprise */}
+              {!candlesOn && (
+                <button className="btn green" onClick={() => setStep("messages")}>
+                  💖 Next Surprise
+                </button>
+              )}
             </div>
-          </div>
-
-          {/* Mobile blow button */}
-          {candlesOn && !micStarted && window.innerWidth <= 768 && (
-            <button className="btn blue" onClick={startBlowDetectionMobile}>
-              🎤 Start Blowing
-            </button>
           )}
 
-          {/* Next Surprise */}
-          {!candlesOn && (
-            <button className="btn green" onClick={() => setStep("messages")}>
-              💖 Next Surprise
-            </button>
+          {/* Messages */}
+          {step === "messages" && (
+            <div className="messages-container">
+              <h2 className="section-title">💌 My Special Messages 💌</h2>
+              <div className="messages">
+                <p>✨ You make my world brighter every single day.</p>
+                <p>💖 Thank you for being my everything.</p>
+                <p>🌸 Wishing you endless love, laughter & joy.</p>
+              </div>
+              <button className="btn purple" onClick={() => setStep("gallery")}>
+                📸 See Our Memories
+              </button>
+            </div>
           )}
-        </div>
-      )}
 
-      {/* Messages */}
-      {step === "messages" && (
-        <div className="messages-container">
-          <h2 className="section-title">💌 My Special Messages 💌</h2>
-          <div className="messages">
-            <p>✨ You make my world brighter every single day.</p>
-            <p>💖 Thank you for being my everything.</p>
-            <p>🌸 Wishing you endless love, laughter & joy.</p>
-          </div>
-          <button className="btn purple" onClick={() => setStep("gallery")}>
-            📸 See Our Memories
-          </button>
-        </div>
-      )}
+          {/* Gallery */}
+          {step === "gallery" && (
+            <div className="gallery-container">
+              <h2 className="section-title">💖 Our Memories 💖</h2>
+              <div className="gallery-image">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={currentIndex}
+                    src={images[currentIndex]}
+                    alt={`Memory ${currentIndex + 1}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1 }}
+                  />
+                </AnimatePresence>
+              </div>
 
-      {/* Gallery */}
-      {step === "gallery" && (
-        <div className="gallery-container">
-          <h2 className="section-title">💖 Our Memories 💖</h2>
-          <div className="gallery-image">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={currentIndex}
-                src={images[currentIndex]}
-                alt={`Memory ${currentIndex + 1}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
-              />
-            </AnimatePresence>
-          </div>
-
-          {!allSeen ? (
-            <p className="hint-text">✨ Wait, 4 memories will appear ✨</p>
-          ) : (
-            <button className="btn green" onClick={() => setStep("final")}>
-              🌟 Final Surprise
-            </button>
+              {!allSeen ? (
+                <p className="hint-text">✨ Wait, 4 memories will appear ✨</p>
+              ) : (
+                <button className="btn green" onClick={() => setStep("final")}>
+                  🌟 Final Surprise
+                </button>
+              )}
+            </div>
           )}
-        </div>
-      )}
 
-      {/* Final Note */}
-      {step === "final" && (
-        <div className="final-note">
-          <h2 className="final-title">💍 Forever & Always 💍</h2>
-          <p className="final-text">
-            No matter where life takes us, my heart will always belong to you.
-            You are my sunshine, my love, and my forever. 💖
-          </p>
-        </div>
+          {/* Final Note */}
+          {step === "final" && (
+            <div className="final-note">
+              <h2 className="final-title">💍 Forever & Always 💍</h2>
+              <p className="final-text">
+                No matter where life takes us, my heart will always belong to you.
+                You are my sunshine, my love, and my forever. 💖
+              </p>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
