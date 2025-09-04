@@ -152,7 +152,7 @@ function App() {
   // Check if it's September 13, 12:00 AM or later
   const isOpenTime = () => {
     const now = new Date();
-    const openDate = new Date(now.getFullYear(), 8, 4, 22, 5, 0); // Month 8 = September, 12:00 AM
+    const openDate = new Date(now.getFullYear(), 8, 13, 0, 0, 0); // Month 8 = September, 12:00 AM
     return now >= openDate;
   };
 
